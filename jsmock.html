@@ -1,0 +1,24 @@
+<html>
+
+<head>
+<title>JS Mock Services</title>
+</head>
+
+
+<script>
+
+window.downloadText = function(callid, address, secret) {
+	var callbackListener = window.CallbackListener;
+	
+	callbackListener.onTextDownloadComplete_(callid, "Just some text.");
+};
+
+</script>
+
+<body>
+
+
+
+</body>
+
+</html>
