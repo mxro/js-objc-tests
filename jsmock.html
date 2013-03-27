@@ -1,5 +1,7 @@
 <html>
 
+<html>
+
 <head>
 <title>JS Mock Services</title>
 </head>
@@ -9,7 +11,7 @@
 <script>
 
 window.helloWorld - function() {
-  var txtNode = document.createTextNode("Hello. This is a new node."); 
+  var txt = document.createTextNode("Hello. This is a new node."); 
   document.getElementById('myDiv').appendChild(txt); 
   alert("hello world!");
 };
@@ -21,8 +23,10 @@ window.downloadText = function(callid, address, secret) {
 	callbackListener.onTextDownloadComplete_(callid, "Just some text.");
 };
 
-var txtNode = document.createTextNode("Hello. 123."); 
+window.onload = function() {
+var txt = document.createTextNode("Hello. 123."); 
   document.getElementById('myDiv').appendChild(txt); 
+};
 
 </script>
 
