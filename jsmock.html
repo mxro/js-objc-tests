@@ -9,6 +9,8 @@
 <script>
 
 window.helloWorld - function() {
+  var txtNode = document.createTextNode("Hello. This is a new node."); 
+  document.getElementById('myDiv').appendChild(txt); 
   alert("hello world!");
 };
 
@@ -23,7 +25,7 @@ window.downloadText = function(callid, address, secret) {
 
 <body>
 
-
+<div id="myDiv"></div>
 
 </body>
 
