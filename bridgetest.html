@@ -21,7 +21,9 @@ h1 {
   window.onNextwebOnedb = function() {
 	  var session = Nextweb.createSession();
       session.node("http://slicnet.com/seed1/seed1/5/3/9/8/h/sd").get(function(node) {
-          console.log( node.value()); 
+    	  var el = document.body.appendChild(document.createElement('div'));
+          el.innerHTML = 'Test Call [' +node.value() + ']';
+    	  
       });
   };
   
