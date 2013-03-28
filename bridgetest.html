@@ -10,26 +10,28 @@ h1 {
 </head>
 <body>
 	<h1>Javascript Bridge Demo</h1>
+	
 	<script
 		src="http://appjangle.com/js/v01/appjangle/appjangle.nocache.js"></script>
-
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 
 	<script>
   document.addEventListener('WebViewJavascriptBridgeReady', onBridgeReady, false);
   
-  var nextwebloaded = false;
-  
+ 
   window.onNextwebOnedb = function() {
 	  var session = Nextweb.createSession();
       session.node("http://slicnet.com/seed1/seed1/5/3/9/8/h/sd").get(function(node) {
-    	  var el = document.body.appendChild(document.createElement('div'));
-          el.innerHTML = 'Test Call [' +node.value() + ']';
+    	  $('body').append('<p>Test Call [' +node.value() + ']</p>');
     	  
+    	  session.close().get(function() {});
       });
-      nextwebloaded = true;
+      
   };
   
+  
+ 
   function onBridgeReady() {
 	 
 	  WebViewJavascriptBridge.registerJsCallback('testJsCallback', function(params) {
@@ -50,7 +52,7 @@ h1 {
           var el = document.body.appendChild(document.createElement('div'));
           el.innerHTML = message;
           
- var session = Nextweb.createSession();
+          var session = Nextweb.createSession();
           
           session.node("http://slicnet.com/seed1/seed1/5/3/9/8/h/sd").get(function(node) {
               var el = document.body.appendChild(document.createElement('div'));
@@ -66,30 +68,31 @@ h1 {
 
       document.body.appendChild(document.createElement('br'));
 
-      var callbackButton = document.body.appendChild(document.createElement('button'));
-      callbackButton.innerHTML = 'Click me to call ObjC callback';
-      callbackButton.onclick = callbackButton.ontouchstart = function() { 
-    	
-    	 var el = document.body.appendChild(document.createElement('div'));
+      var callbackButton =$("<button>Click me to call ObjC callback</button>").appendTo('body');
+      callbackButton.click(function(evt) { 
+        
+         var el = document.body.appendChild(document.createElement('div'));
          el.innerHTML = 'click received';
-    	 if (false) {
-    		 var el = document.body.appendChild(document.createElement('div'));
+         if (false) {
+             var el = document.body.appendChild(document.createElement('div'));
              el.innerHTML = 'Nextweb not loaded';
-    		  WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': 'bar'}); 
-    	  } else {
-    		  var el = document.body.appendChild(document.createElement('div'));
+              WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': 'bar'}); 
+          } else {
+              var el = document.body.appendChild(document.createElement('div'));
               el.innerHTML = 'send request';
-    		  var session = Nextweb.createSession();
-    		 
-    		  session.node("http://slicnet.com/seed1/seed1/5/3/9/8/h/sd").get(function(node) {
-    			  var el = document.body.appendChild(document.createElement('div'));
+              var session = Nextweb.createSession();
+             
+              session.node("http://slicnet.com/seed1/seed1/5/3/9/8/h/sd").get(function(node) {
+                  var el = document.body.appendChild(document.createElement('div'));
                   el.innerHTML = '3 received response '+node.value();
-    			  WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': node.value()}); 
-    		  });
-    	  }
-    	  
+                  WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': node.value()}); 
+              });
+          }
+          
      
-      };
+      });
+      
+      
   }
   </script>
 </body>
