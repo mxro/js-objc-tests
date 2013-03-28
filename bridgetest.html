@@ -1,3 +1,4 @@
+<!-- one.upload https://u1.linnk.it/qc8sbw/usr/apps/textsync/files/bridgetest -->
 <!doctype html>
 <html>
 <head>
@@ -18,6 +19,10 @@ h1 {
   document.addEventListener('WebViewJavascriptBridgeReady', onBridgeReady, false);
   
   window.onNextwebOnedb = function() {
+	  var session = Nextweb.createSession();
+      session.node("http://slicnet.com/seed1/seed1/5/3/9/8/h/sd").get(function(node) {
+          console.log( node.value()); 
+      });
   };
   
   function onBridgeReady() {
@@ -49,7 +54,7 @@ h1 {
     	  } else {
     		  var session = Nextweb.createSession();
     		  session.node("http://slicnet.com/seed1/seed1/5/3/9/8/h/sd").get(function(node) {
-    			  WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': value}); 
+    			  WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': node.value()}); 
     		  });
     	  }
     	  
@@ -59,3 +64,5 @@ h1 {
   </script>
 </body>
 </html>
+
+<!-- one.end -->
