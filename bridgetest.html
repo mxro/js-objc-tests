@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+<style type='text/css'>
+h1 {
+	color: red;
+}
+</style>
+</head>
+<body>
+	<h1>Javascript Bridge Demo</h1>
+	<script
+		src="http://appjangle.com/js/v01/appjangle/appjangle.nocache.js"></script>
+
+
+
+	<script>
+  document.addEventListener('WebViewJavascriptBridgeReady', onBridgeReady, false);
+  
+  window.onNextwebOnedb = function() {
+  };
+  
+  function onBridgeReady() {
+	 
+	  WebViewJavascriptBridge.registerJsCallback('testJsCallback', function(params) {
+          var el = document.body.appendChild(document.createElement('div'));
+          el.innerHTML = 'JS Callback called foo is [' + params.foo + ']';
+      });
+
+      WebViewJavascriptBridge.setMessageHandler(function(message) {
+          var el = document.body.appendChild(document.createElement('div'));
+          el.innerHTML = message;
+      });
+      WebViewJavascriptBridge.sendMessage('hello from the JS');
+
+      var button = document.body.appendChild(document.createElement('button'));
+      button.innerHTML = 'Click me to send a message to ObjC';
+      button.onclick = button.ontouchstart = function() { WebViewJavascriptBridge.sendMessage('hello from JS button'); };
+
+      document.body.appendChild(document.createElement('br'));
+
+      var callbackButton = document.body.appendChild(document.createElement('button'));
+      callbackButton.innerHTML = 'Click me to call ObjC callback';
+      callbackButton.onclick = callbackButton.ontouchstart = function() { 
+    	 var res;
+    	  if (window.Nextweb) {
+    		  res = 'bar';
+    		  WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': res}); 
+    	  } else {
+    		  var session = Nextweb.createSession();
+    		  session.node("http://slicnet.com/seed1/seed1/5/3/9/8/h/sd").get(function(node) {
+    			  WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': value}); 
+    		  });
+    	  }
+    	  
+     
+      };
+  }
+  </script>
+</body>
+</html>
