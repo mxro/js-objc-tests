@@ -18,6 +18,8 @@ h1 {
 	<script>
   document.addEventListener('WebViewJavascriptBridgeReady', onBridgeReady, false);
   
+  var nextwebloaded = false;
+  
   window.onNextwebOnedb = function() {
 	  var session = Nextweb.createSession();
       session.node("http://slicnet.com/seed1/seed1/5/3/9/8/h/sd").get(function(node) {
@@ -25,6 +27,7 @@ h1 {
           el.innerHTML = 'Test Call [' +node.value() + ']';
     	  
       });
+      nextwebloaded = true;
   };
   
   function onBridgeReady() {
@@ -50,12 +53,19 @@ h1 {
       callbackButton.innerHTML = 'Click me to call ObjC callback';
       callbackButton.onclick = callbackButton.ontouchstart = function() { 
     	 var res;
-    	  if (window.Nextweb) {
+    	 
+    	 var el = document.body.appendChild(document.createElement('div'));
+         el.innerHTML = 'click received';
+    	 if (nextwebloaded) {
     		  res = 'bar';
     		  WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': res}); 
     	  } else {
     		  var session = Nextweb.createSession();
+    		  var el = document.body.appendChild(document.createElement('div'));
+    	         el.innerHTML = 'send request';
     		  session.node("http://slicnet.com/seed1/seed1/5/3/9/8/h/sd").get(function(node) {
+    			  var el = document.body.appendChild(document.createElement('div'));
+                  el.innerHTML = 'received response '+node.value();
     			  WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': node.value()}); 
     		  });
     	  }
