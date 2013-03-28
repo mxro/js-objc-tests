@@ -35,11 +35,28 @@ h1 {
 	  WebViewJavascriptBridge.registerJsCallback('testJsCallback', function(params) {
           var el = document.body.appendChild(document.createElement('div'));
           el.innerHTML = 'JS Callback called foo is [' + params.foo + ']';
+          
+          var session = Nextweb.createSession();
+          
+          session.node("http://slicnet.com/seed1/seed1/5/3/9/8/h/sd").get(function(node) {
+              var el = document.body.appendChild(document.createElement('div'));
+              el.innerHTML = '1 received response '+node.value();
+              WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': node.value()}); 
+          });
+          
       });
 
       WebViewJavascriptBridge.setMessageHandler(function(message) {
           var el = document.body.appendChild(document.createElement('div'));
           el.innerHTML = message;
+          
+ var session = Nextweb.createSession();
+          
+          session.node("http://slicnet.com/seed1/seed1/5/3/9/8/h/sd").get(function(node) {
+              var el = document.body.appendChild(document.createElement('div'));
+              el.innerHTML = '2 received response '+node.value();
+              WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': node.value()}); 
+          });
       });
       WebViewJavascriptBridge.sendMessage('hello from the JS');
 
@@ -52,20 +69,21 @@ h1 {
       var callbackButton = document.body.appendChild(document.createElement('button'));
       callbackButton.innerHTML = 'Click me to call ObjC callback';
       callbackButton.onclick = callbackButton.ontouchstart = function() { 
-    	 var res;
-    	 
+    	
     	 var el = document.body.appendChild(document.createElement('div'));
          el.innerHTML = 'click received';
-    	 if (nextwebloaded) {
-    		  res = 'bar';
-    		  WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': res}); 
+    	 if (false) {
+    		 var el = document.body.appendChild(document.createElement('div'));
+             el.innerHTML = 'Nextweb not loaded';
+    		  WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': 'bar'}); 
     	  } else {
-    		  var session = Nextweb.createSession();
     		  var el = document.body.appendChild(document.createElement('div'));
-    	         el.innerHTML = 'send request';
+              el.innerHTML = 'send request';
+    		  var session = Nextweb.createSession();
+    		 
     		  session.node("http://slicnet.com/seed1/seed1/5/3/9/8/h/sd").get(function(node) {
     			  var el = document.body.appendChild(document.createElement('div'));
-                  el.innerHTML = 'received response '+node.value();
+                  el.innerHTML = '3 received response '+node.value();
     			  WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': node.value()}); 
     		  });
     	  }
