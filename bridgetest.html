@@ -10,10 +10,11 @@ h1 {
 </head>
 <body>
 	<h1>Javascript Bridge Demo</h1>
-	
+
 	<script
 		src="http://appjangle.com/js/v01/appjangle/appjangle.nocache.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script
+		src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 
 	<script>
@@ -35,59 +36,54 @@ h1 {
   function onBridgeReady() {
 	 
 	  WebViewJavascriptBridge.registerJsCallback('testJsCallback', function(params) {
-          var el = document.body.appendChild(document.createElement('div'));
-          el.innerHTML = 'JS Callback called foo is [' + params.foo + ']';
+         
+          $('body').append('<p>JS Callback called foo is [' + params.foo + ']</p>');
           
           var session = Nextweb.createSession();
           
           session.node("http://slicnet.com/seed1/seed1/5/3/9/8/h/sd").get(function(node) {
-              var el = document.body.appendChild(document.createElement('div'));
-              el.innerHTML = '1 received response '+node.value();
+              $('body').append('<p>1 received response '+node.value()+'</p>');
+              
               WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': node.value()}); 
           });
           
       });
 
       WebViewJavascriptBridge.setMessageHandler(function(message) {
-          var el = document.body.appendChild(document.createElement('div'));
-          el.innerHTML = message;
+          $('body').append('<p>'+message+'</p>');
           
           var session = Nextweb.createSession();
           
           session.node("http://slicnet.com/seed1/seed1/5/3/9/8/h/sd").get(function(node) {
-              var el = document.body.appendChild(document.createElement('div'));
-              el.innerHTML = '2 received response '+node.value();
+              $('body').append('<p>2 received response '+node.value()+'</p>');
               WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': node.value()}); 
           });
       });
+      
       WebViewJavascriptBridge.sendMessage('hello from the JS');
 
-      var button = document.body.appendChild(document.createElement('button'));
-      button.innerHTML = 'Click me to send a message to ObjC';
-      button.onclick = button.ontouchstart = function() { WebViewJavascriptBridge.sendMessage('hello from JS button'); };
-
-      document.body.appendChild(document.createElement('br'));
-
+      var button = $('<button>Click me to send a message to ObjC</button>').appendTo('body');
+      button.click(function(evt) {
+    	  evt.preventDefault();
+    	  WebViewJavascriptBridge.sendMessage('hello from JS button');  
+      });
+      
+      $('body').append('<br>');
+      
       var callbackButton =$("<button>Click me to call ObjC callback</button>").appendTo('body');
       callbackButton.click(function(evt) { 
         
-         var el = document.body.appendChild(document.createElement('div'));
-         el.innerHTML = 'click received';
-         if (false) {
-             var el = document.body.appendChild(document.createElement('div'));
-             el.innerHTML = 'Nextweb not loaded';
-              WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': 'bar'}); 
-          } else {
-              var el = document.body.appendChild(document.createElement('div'));
-              el.innerHTML = 'send request';
+    	  $('body').append('<p>click received</p>');
+    	  $('body').append('<p>send request</p>');
+
               var session = Nextweb.createSession();
              
               session.node("http://slicnet.com/seed1/seed1/5/3/9/8/h/sd").get(function(node) {
-                  var el = document.body.appendChild(document.createElement('div'));
-                  el.innerHTML = '3 received response '+node.value();
+                  $('body').append('<p>3 received response '+node.value()+'</p>');
+            	 
                   WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': node.value()}); 
               });
-          }
+         
           
      
       });
