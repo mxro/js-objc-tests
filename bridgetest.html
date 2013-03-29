@@ -42,7 +42,7 @@ h1 {
           var session = Nextweb.createSession();
           
           session.node("http://slicnet.com/seed1/seed1/5/3/9/8/h/sd").get(function(node) {
-              $('body').append('<p>1 received response '+node.value()+'</p>');
+              $('body').append('<p>testJsCallback received response '+node.value()+'</p>');
               
               WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': node.value()}); 
           });
@@ -55,7 +55,7 @@ h1 {
           var session = Nextweb.createSession();
           
           session.node("http://slicnet.com/seed1/seed1/5/3/9/8/h/sd").get(function(node) {
-              $('body').append('<p>2 received response '+node.value()+'</p>');
+              $('body').append('<p>messagehandler received response '+node.value()+'</p>');
               WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': node.value()}); 
           });
       });
@@ -76,16 +76,14 @@ h1 {
     	  $('body').append('<p>click received</p>');
     	  $('body').append('<p>send request</p>');
 
-              var session = Nextweb.createSession();
-             
-              session.node("http://slicnet.com/seed1/seed1/5/3/9/8/h/sd").get(function(node) {
-                  $('body').append('<p>3 received response '+node.value()+'</p>');
-            	 
-                  WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': node.value()}); 
-              });
+          var session = Nextweb.createSession();
          
-          
-     
+          session.node("http://slicnet.com/seed1/seed1/5/3/9/8/h/sd").get(function(node) {
+              $('body').append('<p>3 received response '+node.value()+'</p>');
+        	 
+              WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': node.value()}); 
+          });
+
       });
       
       
