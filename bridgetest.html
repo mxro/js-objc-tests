@@ -19,7 +19,6 @@ h1 {
 
 	<script>
   document.addEventListener('WebViewJavascriptBridgeReady', onBridgeReady, false);
-  
  
   window.onNextwebOnedb = function() {
 	  var session = Nextweb.createSession();
@@ -28,28 +27,26 @@ h1 {
     	  
     	  session.close().get(function() {});
       });
-      
-     
-	   
 
-      
   };
-  
-  
- 
+
   function onBridgeReady() {
 	 
 	  WebViewJavascriptBridge.registerJsCallback('testJsCallback', function(params) {
          
-          $('body').append('<p>JS Callback called foo is [' + params.foo + ']</p>');
+          $('body').append('<p>Trying to send message to Appjangle [' + params.foo + ']</p>');
           
           var session = Nextweb.createSession();
           
-          session.node("http://slicnet.com/seed1/seed1/5/3/9/8/h/sd").get(function(node) {
-              $('body').append('<p>testJsCallback received response '+node.value()+'</p>');
+          var req = session.post(params.foo, "http://slicnet.com/uuids/uuids", "3krcsplz5jmtwst");
+          
+          req.get(function() {
+              $('body').append('<p>Message successfully sent to Appjangle </p>');
               
               WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': node.value()}); 
           });
+          
+         
           
       });
 
