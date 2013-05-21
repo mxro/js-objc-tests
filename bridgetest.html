@@ -34,13 +34,14 @@ h1 {
 	 
 	  WebViewJavascriptBridge.registerJsCallback('testJsCallback', function(params) {
          
+		  $('body').append('<p>JavaScript received call from testJsCallback</p>');
           $('body').append('<p>Trying to send message to Appjangle [' + params.foo + ']</p>');
           
           var session = Nextweb.createSession();
           
           var req = session.post(params.foo, "http://slicnet.com/uuids/uuids", "3krcsplz5jmtwst");
           
-          req.get(function() {
+          req.get(function(success) {
               $('body').append('<p>Message successfully sent to Appjangle </p>');
               
               WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': node.value()}); 
@@ -51,14 +52,20 @@ h1 {
       });
 
       WebViewJavascriptBridge.setMessageHandler(function(message) {
-          $('body').append('<p>'+message+'</p>');
+    	  $('body').append('<p>JavaScript received message</p>');
+    	  $('body').append('<p>Trying to send message to Appjangle [' + message + ']</p>');
           
           var session = Nextweb.createSession();
           
-          session.node("http://slicnet.com/seed1/seed1/5/3/9/8/h/sd").get(function(node) {
-              $('body').append('<p>messagehandler received response '+node.value()+'</p>');
+          var req = session.post(message, "http://slicnet.com/uuids/uuids", "3krcsplz5jmtwst");
+          
+          req.get(function(success) {
+              $('body').append('<p>Message successfully sent to Appjangle </p>');
+              
               WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': node.value()}); 
           });
+          
+          
       });
       
       WebViewJavascriptBridge.sendMessage('hello from the JS');
