@@ -78,18 +78,20 @@ h1 {
       
       $('body').append('<br>');
       
-      var callbackButton =$("<button>Click me to call ObjC callback</button>").appendTo('body');
+      var callbackButton =$("<button>Click me to retrieve UIDs</button>").appendTo('body');
       callbackButton.click(function(evt) { 
         
-    	  $('body').append('<p>click received</p>');
-    	  $('body').append('<p>send request</p>');
+    	  $('body').append('<p>Starting to retrieve UIDs/p>');
+    	 
 
           var session = Nextweb.createSession();
          
-          session.node("http://slicnet.com/seed1/seed1/5/3/9/8/h/sd").get(function(node) {
-              $('body').append('<p>3 received response '+node.value()+'</p>');
+          session.node("http://slicnet.com/uuids/uuids", "password").selectAll().get(function(children) {
+              
+        	  
+        	  $('body').append('<p>Retrieved: '+children.values()+'</p>');
         	 
-              WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': node.value()}); 
+              WebViewJavascriptBridge.callObjcCallback('testObjcCallback', {'foo': children.values()}); 
           });
 
       });
